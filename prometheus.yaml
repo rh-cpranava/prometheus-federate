@@ -1,0 +1,61 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: federation-prometheus
+  labels:
+    prometheus: federation-prometheus
+  namespace: prometheus-federate 
+spec:
+  replicas: 2
+  version: v2.8.0
+  serviceAccountName: prometheus-k8s
+  serviceMonitorSelector:
+    matchLabels:
+      app: federation-monitor
+  configMaps:
+  - serving-certs-ca-bundle
+  containers:
+  - args:
+    - -provider=openshift
+    - -https-address=:9091
+    - -http-address=
+    - -email-domain=*
+    - -upstream=http://localhost:9090
+    - -openshift-service-account=prometheus-k8s
+    - '-openshift-sar={"resource": "namespaces", "verb": "get"}'
+    - -tls-cert=/etc/tls/private/tls.crt
+    - -tls-key=/etc/tls/private/tls.key
+    - -cookie-secret-file=/etc/proxy/secrets/session_secret
+    - -skip-auth-regex=^/metrics
+    image: quay.io/openshift/origin-oauth-proxy:latest
+    name: oauth-proxy
+    ports:
+    - containerPort: 9091
+      name: web-proxy
+    volumeMounts:
+    - mountPath: /etc/tls/private
+      name: secret-prometheus-k8s-tls
+    - mountPath: /etc/proxy/secrets
+      name: secret-prometheus-k8s-proxy
+  secrets:
+    - prometheus-k8s-tls
+    - prometheus-k8s-proxy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.alpha.openshift.io/serving-cert-secret-name: prometheus-k8s-tls
+  labels:
+    prometheus: federation-prometheus
+  name: prometheus-k8s
+spec:
+  ports:
+  - name: web-proxy
+    port: 9091
+    protocol: TCP
+    targetPort: web-proxy
+  selector:
+    app: prometheus
+    prometheus: federation-prometheus
+  type: ClusterIP

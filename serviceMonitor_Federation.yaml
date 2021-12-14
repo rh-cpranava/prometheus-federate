@@ -1,0 +1,29 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app: federation-monitor
+  name: federation-prometheus
+  namespace: prometheus-federate
+spec:
+  endpoints:
+  - interval: 30s
+    scrapeTimeout: 30s
+    port: web
+    path: /federate
+    honorLabels: true
+    params:
+      'match[]': 
+        - '{job!=""}'
+    scheme: https
+    bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+    tlsConfig:
+      caFile: /etc/prometheus/configmaps/serving-certs-ca-bundle/service-ca.crt
+      serverName: prometheus-k8s.openshift-monitoring.svc.cluster.local
+  namespaceSelector:
+    matchNames:
+    - openshift-monitoring
+  selector:
+    matchLabels:
+      prometheus: "k8s"

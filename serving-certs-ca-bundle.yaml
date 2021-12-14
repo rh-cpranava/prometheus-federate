@@ -1,0 +1,53 @@
+apiVersion: v1
+data:
+  service-ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDUTCCAjmgAwIBAgIIHfHtsaVxzEwwDQYJKoZIhvcNAQELBQAwNjE0MDIGA1UE
+    Awwrb3BlbnNoaWZ0LXNlcnZpY2Utc2VydmluZy1zaWduZXJAMTYzNjQ1MzgyNzAe
+    Fw0yMTExMDkxMDMwMjZaFw0yNDAxMDgxMDMwMjdaMDYxNDAyBgNVBAMMK29wZW5z
+    aGlmdC1zZXJ2aWNlLXNlcnZpbmctc2lnbmVyQDE2MzY0NTM4MjcwggEiMA0GCSqG
+    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDT3Qc5nzf1SfXpNFOi8mZIP+mbeGUXhhAI
+    XUW+a6Bt0XBTnzURVlOlg//c0iPiGO998AAiCtH2GtNJNC7gwYrg5Wt34GyrZoVc
+    3wWc1Yu43HARD1MS5JQwEaDrELFDJSmWPTY8iVfQJZRW5b1NvhIo10MrBc4DKZie
+    tk3wMrCPVh88oo+L7C7z0f+rU6tbIS50kQtn2pcaKwxra/ecgbm/OrdwOwv3GOX1
+    em1Hew8cwPFwiNBhiE08+Zkq7QRipYjNpc3WPw0HeuE8Gt7dQOMoMYbvRjyDgTB9
+    Zpf8LEFluqJsQpBLy1hq80d/LMTPzo2ZTFgfGSUKX7zJ/9764uNvAgMBAAGjYzBh
+    MA4GA1UdDwEB/wQEAwICpDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSgEBqH
+    qEvcQiNDI7Uef2R142ax9jAfBgNVHSMEGDAWgBSgEBqHqEvcQiNDI7Uef2R142ax
+    9jANBgkqhkiG9w0BAQsFAAOCAQEArc9hn1IHVUCbfb5fr2zkNfK9DVF+JMRAj4yN
+    ShC5ldOk6yWcJbSQOQUR+d2C8W/RA0a71cA+sdvT0DICfUM2+r+fprpQD0AnaZnd
+    SmGM3n4VDExRxFrnTUq4BTNzlhPKYCwlPqqkELaNndOMPnlEwLa6oqmFr3fdBHhe
+    vfCtLh94vIb+wrkywJ7LkmeIgPZVqiNunYoJiLjLL8RUhitX4+UXU7NXRyI+vhCB
+    aDl80g/wLA1zbOUvpqsy/nc0qtrrc6dj0ViaWL7wrn102tBCikvlMTLvXE9Z6u9B
+    KI9KmZnNomvf0TUddjd6I5uPZb4RQeZenOaTQLWC50AF2DCGJA==
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  annotations:
+    service.alpha.openshift.io/inject-cabundle: "true"
+  creationTimestamp: "2021-11-09T10:30:13Z"
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data: {}
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:service.alpha.openshift.io/inject-cabundle: {}
+    manager: operator
+    operation: Update
+    time: "2021-11-09T10:30:13Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:data:
+        f:service-ca.crt: {}
+    manager: service-ca-operator
+    operation: Update
+    time: "2021-11-09T10:30:47Z"
+  name: serving-certs-ca-bundle
+  namespace: prometheus-federate 
+  resourceVersion: "7111"
+  selfLink: /api/v1/namespaces/openshift-monitoring/configmaps/serving-certs-ca-bundle
+  uid: 842324ef-005a-4615-9d99-969b4e3917e3
